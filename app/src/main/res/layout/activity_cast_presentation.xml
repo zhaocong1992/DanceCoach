@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <!-- 主内容：老师视频 + 学生摄像头（左右分栏） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!-- 老师视频区 -->
+        <FrameLayout
+            android:id="@+id/castTeacherContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/black">
+
+            <SurfaceView
+                android:id="@+id/castTeacherSurface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- 段进度方块容器（顶部；进度条已移除，不再显示） -->
+            <LinearLayout
+                android:id="@+id/castSegmentProgressContainer"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_gravity="top"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <!-- 段进度条（底部；进度条已移除，不再显示） -->
+            <ProgressBar
+                android:id="@+id/castSegmentProgress"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#00E5FF"
+                android:backgroundTint="#44000000"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- 学生摄像头区 -->
+        <FrameLayout
+            android:id="@+id/castStudentContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/black">
+
+            <TextureView
+                android:id="@+id/castStudentTexture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- 实时骨架叠加 -->
+            <com.dancecoach.app.ui.SkeletonOverlayView
+                android:id="@+id/castSkeleton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+            <!-- 相似度分数（右上角） -->
+            <TextView
+                android:id="@+id/castScoreText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#80000000"
+                android:padding="6dp"
+                android:text="相似度 --%"
+                android:textColor="#00E5FF"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- 提示文字（左上角） -->
+            <TextView
+                android:id="@+id/castHintText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:background="#80000000"
+                android:padding="6dp"
+                android:text="大屏跟练中"
+                android:textColor="#B0BEC5"
+                android:textSize="14sp" />
+
+            <!-- 学生跳舞进度条（最底部；进度条已移除，不再显示） -->
+            <ProgressBar
+                android:id="@+id/castStudentProgress"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#00E676"
+                android:backgroundTint="#44000000"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+</FrameLayout>

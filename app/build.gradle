@@ -1,0 +1,109 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 云端配置注入（可选）
+//
+// 开源版不内置任何云端地址与密钥。想接入自建后端时，在项目根 local.properties
+// （已被 .gitignore 排除）加入：
+//     cloud.endpoint=https://your-gateway.example.com/api
+//     cloud.appToken=your-shared-secret
+// 或用 -Pcloud.endpoint=... -Pcloud.appToken=... 传入。
+// 都不配置时，App 会自动回退到本地 Mock 数据（见 MarketRepoProvider）。
+// ─────────────────────────────────────────────────────────────────────────────
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+def cloudEndpoint = (localProps.getProperty("cloud.endpoint")
+        ?: project.findProperty("cloud.endpoint") ?: "").toString().trim()
+def cloudAppToken = (localProps.getProperty("cloud.appToken")
+        ?: project.findProperty("cloud.appToken") ?: "").toString().trim()
+
+// 正式签名：仅当本地存在 keystore 时才启用；开源使用者没有密钥时自动退回 debug 签名，
+// 保证 `./gradlew assembleRelease` 开箱即可跑通。
+def releaseProps = new Properties()
+def releasePropsFile = rootProject.file("keystore/dancecoach-release.properties")
+if (releasePropsFile.exists()) {
+    releasePropsFile.withInputStream { releaseProps.load(it) }
+}
+def hasReleaseKey = rootProject.file("keystore/dancecoach-release.jks").exists() && releasePropsFile.exists()
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    defaultConfig {
+        applicationId "com.dancecoach.app"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 2
+        versionName "1.0.0"
+
+        buildConfigField "String", "CLOUD_ENDPOINT", "\"${cloudEndpoint}\""
+        buildConfigField "String", "CLOUD_APP_TOKEN", "\"${cloudAppToken}\""
+    }
+    signingConfigs {
+        if (hasReleaseKey) {
+            release {
+                storeFile rootProject.file("keystore/dancecoach-release.jks")
+                storePassword releaseProps.getProperty("storePassword")
+                keyAlias releaseProps.getProperty("keyAlias")
+                keyPassword releaseProps.getProperty("keyPassword")
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 无正式密钥时用 debug 签名，方便任何人本地构建验证
+            signingConfig hasReleaseKey ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+    lintOptions {
+        // 旧版 Kotlin 插件(1.4) 读不了依赖传递的 kotlin-stdlib(1.6) 元数据，release 的
+        // lintVital 因此失败；运行时无影响（debug 一直正常），跳过 release lint。
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.camera:camera-camera2:1.0.2'
+    implementation 'androidx.camera:camera-core:1.0.2'
+    implementation 'androidx.camera:camera-lifecycle:1.0.2'
+    implementation 'com.google.mlkit:pose-detection:18.0.0-beta3'
+    implementation 'com.google.mlkit:pose-detection-common:18.0.0-beta3'
+    implementation 'androidx.lifecycle:lifecycle-process:2.3.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
+    implementation 'androidx.mediarouter:mediarouter:1.2.5'
+}
+
+// 本地 SDK 仅到 API 30。ML Kit 的加速模块(acceleration/MiniBenchmarkWorker)
+// 需要 androidx.work.multiprocess.RemoteListenableWorker，该类在 work 2.6.0 才引入，
+// 而 ML Kit 默认拉取 work 2.7.0(声明 minCompileSdk 31，本机 SDK 不支持)。
+// 折中：把整个 androidx.work 组锁到仍兼容 API 30 的 2.6.0（含 RemoteListenableWorker）。
+// 本应用不直接调用 work API，仅 ML Kit 内部反射使用，安全。
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            if (details.requested.group == 'androidx.work') {
+                details.useVersion '2.6.0'
+            }
+        }
+    }
+}

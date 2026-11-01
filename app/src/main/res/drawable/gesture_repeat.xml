@@ -1,0 +1,45 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- 头 -->
+    <path
+        android:pathData="M24,10 m-3.5,0 a3.5,3.5 0 1,0 7,0 a3.5,3.5 0 1,0 -7,0"
+        android:fillColor="#FFFFFF" />
+    <!-- 身体 -->
+    <path
+        android:pathData="M24,14 L24,32"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2" />
+    <!-- 肩膀连线 -->
+    <path
+        android:pathData="M17,18 L31,18"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2" />
+    <!-- 左臂：肩→肘→手腕 水平外展 -->
+    <path
+        android:pathData="M17,18 L10,18 L3,18"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- 右臂：肩→肘→手腕 水平外展 -->
+    <path
+        android:pathData="M31,18 L38,18 L45,18"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- 左腿 -->
+    <path
+        android:pathData="M24,32 L19,45"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2" />
+    <!-- 右腿 -->
+    <path
+        android:pathData="M24,32 L29,45"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2" />
+</vector>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dancecoach.app">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DanceCoach"
+        android:requestLegacyExternalStorage="true">
+
+        <activity
+            android:name="com.dancecoach.app.ui.HomeActivity"
+            android:exported="true"
+            android:configChanges="keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.dancecoach.app.ui.TeachingActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.LibraryActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.ActionReviewActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.MarketActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.MarketDetailActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.MarketUploadActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.MarketMyListActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+        <activity
+            android:name="com.dancecoach.app.ui.SettingsActivity"
+            android:exported="false"
+            android:configChanges="keyboardHidden" />
+
+    </application>
+</manifest>

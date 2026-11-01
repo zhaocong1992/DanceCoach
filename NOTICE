@@ -1,0 +1,44 @@
+AI幻舞 (AI Huanwu)
+Copyright 2026 AI幻舞
+
+This product includes software developed as part of the AI幻舞 project
+(Android dance coaching application, open-source repository TBD).
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+────────────────────────────────────────────────────────────────────────
+第三方组件（Third-party components）
+────────────────────────────────────────────────────────────────────────
+AndroidX (appcompat / constraintlayout / camera / lifecycle / mediarouter)
+    Apache License 2.0
+Kotlin & kotlinx.coroutines
+    Apache License 2.0
+ExoPlayer (com.google.android.exoplayer)
+    Apache License 2.0
+Google ML Kit Pose Detection
+    Subject to Google ML Kit Terms of Service
+    https://developers.google.com/ml-kit/terms
+
+────────────────────────────────────────────────────────────────────────
+品牌保留（Trademark notice）
+────────────────────────────────────────────────────────────────────────
+Apache-2.0 仅授权本仓库中的**源代码**。以下内容不在授权范围内，
+未经书面许可不得用于任何衍生或商业发布：
+
+  · 「AI幻舞」名称与标识（Word mark / Logo）
+  · 应用图标（app/src/main/res/mipmap-*）
+  · 商店截图、宣传素材、官网视觉设计
+
+The Apache-2.0 license covers the source code in this repository only.
+The "AI幻舞" name, logo, app icon, store screenshots and website design
+are NOT licensed for reuse and remain the property of the project owner.

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0B0E14</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#B0BEC5</color>
+    <color name="accent">#00E5FF</color>
+    <color name="success">#00E676</color>
+    <color name="warning">#FF9800</color>
+    <color name="failure">#FF5252</color>
+    <color name="cardBg">#16213E</color>
+    <color name="cardBgActive">#1A3A5C</color>
+    <color name="castIconIdle">#607080</color>
+    <color name="castIconActive">#00E5FF</color>
+    <color name="ic_launcher_foreground">#00000000</color>
+</resources>

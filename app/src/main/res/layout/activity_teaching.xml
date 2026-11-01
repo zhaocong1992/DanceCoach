@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <!-- ═══ 顶部：舞蹈库横向条（竖排标题 + 添加按钮 + 封面横排，同行展开） ═══ -->
+    <LinearLayout
+        android:id="@+id/libraryPanel"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:background="#CC1A1A2E"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="4dp">
+
+        <!-- 竖排「舞蹈库」标签 -->
+        <TextView
+            android:layout_width="26dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="#0E2433"
+            android:gravity="center"
+            android:text="舞\n蹈\n库"
+            android:textColor="#00E5FF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4dp" />
+
+        <Button
+            android:id="@+id/btnPickVideo"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="添\n加\n视\n频"
+            android:textSize="10sp"
+            android:textAllCaps="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="2dp"
+            android:gravity="center" />
+
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:scrollbars="none"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:id="@+id/libraryListContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp" />
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!-- ═══ 教师视频区：占满剩余为主画面 ═══ -->
+    <FrameLayout
+        android:id="@+id/teacherVideoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/black">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/playerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="false" />
+
+        <!-- 段进度方块容器（闯关式，顶部；分段跳已屏蔽，不再显示） -->
+        <LinearLayout
+            android:id="@+id/segmentProgressContainer"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+        <!-- 段进度条（分段跳已屏蔽，跟跳模式下不再使用，默认隐藏） -->
+        <ProgressBar
+            android:id="@+id/segmentProgress"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="bottom"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="#00E5FF"
+            android:backgroundTint="#44000000"
+            android:visibility="gone" />
+
+        <!-- 模式切换按钮：左上角悬浮 -->
+        <Button
+            android:id="@+id/btnModeStatus"
+            android:layout_width="88dp"
+            android:layout_height="34dp"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:text="跟着跳"
+            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="2dp"
+            android:background="@drawable/mode_status_bg_follow" />
+
+        <!-- 提示文字（左上角） -->
+        <TextView
+            android:id="@+id/hintText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="44dp"
+            android:layout_marginStart="4dp"
+            android:background="#80000000"
+            android:padding="4dp"
+            android:text=""
+            android:textColor="@color/textSecondary"
+            android:textSize="11sp" />
+
+        <!-- 相似度分数（右上角） -->
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="#80000000"
+            android:padding="4dp"
+            android:text="相似度 --%"
+            android:textColor="@color/accent"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- 右下：学生悬浮区（普通=单小窗；Debug=三窗并列） -->
+        <LinearLayout
+            android:id="@+id/pipPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="#66000000"
+            android:padding="4dp">
+
+            <!-- 学生摄像头小窗（微信风格，放大一倍） -->
+            <FrameLayout
+                android:id="@+id/studentContainer"
+                android:layout_width="100dp"
+                android:layout_height="168dp"
+                android:background="#0A0D14">
+
+                <TextureView
+                    android:id="@+id/previewView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_margin="3dp"
+                    android:paddingHorizontal="4dp"
+                    android:background="#66000000"
+                    android:text="我"
+                    android:textColor="#00E5FF"
+                    android:textSize="9sp" />
+            </FrameLayout>
+
+            <!-- 调试模式：教师骨架小窗（Debug 时与「我」并列） -->
+            <FrameLayout
+                android:id="@+id/teacherSkeletonPanel"
+                android:layout_width="80dp"
+                android:layout_height="118dp"
+                android:layout_marginStart="6dp"
+                android:background="#AA000000"
+                android:visibility="gone">
+
+                <com.dancecoach.app.ui.SkeletonOverlayView
+                    android:id="@+id/teacherSkeleton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/teacherSkeletonScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:background="#80000000"
+                    android:padding="2dp"
+                    android:text="--%"
+                    android:textColor="#00E5FF"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <!-- 调试模式：用户骨架小窗 -->
+            <FrameLayout
+                android:id="@+id/userSkeletonPanel"
+                android:layout_width="80dp"
+                android:layout_height="118dp"
+                android:layout_marginStart="6dp"
+                android:background="#AA000000"
+                android:visibility="gone">
+
+                <com.dancecoach.app.ui.SkeletonOverlayView
+                    android:id="@+id/userSkeleton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/userSkeletonScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:background="#80000000"
+                    android:padding="2dp"
+                    android:text="--%"
+                    android:textColor="#00E676"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- 摄像头控制按钮栏（底部居中悬浮） -->
+        <LinearLayout
+            android:id="@+id/cameraControlsBar"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="6dp"
+            android:background="#80000000"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <Button
+                android:id="@+id/btnRotateLeft"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:text="↺"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <Button
+                android:id="@+id/btnRotateRight"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="2dp"
+                android:text="↻"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <Button
+                android:id="@+id/btnFlip"
+                android:layout_width="48dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="2dp"
+                android:text="镜像✓"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <Button
+                android:id="@+id/btnMute"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="2dp"
+                android:text="🔊"
+                android:textSize="14sp"
+                android:textAllCaps="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+        </LinearLayout>
+
+        <!-- 学生跳舞进度条（最底部） -->
+        <ProgressBar
+            android:id="@+id/studentProgress"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="bottom"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="#00E676"
+            android:backgroundTint="#44000000"
+            android:visibility="gone" />
+
+        <!-- 准备倒计时（居中） -->
+        <TextView
+            android:id="@+id/followCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="3"
+            android:textSize="56sp"
+            android:textStyle="bold"
+            android:textColor="#FFEB3B"
+            android:visibility="gone" />
+
+        <!-- 手势选择 UI（居中悬浮） -->
+        <LinearLayout
+            android:id="@+id/gestureSelectPanel"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#EE000000"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="做出手势选择（保持1.5秒）"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- 5 个手势选项：骨架图 + 文字 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/gesturePrevIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleX="-1"
+                        android:src="@drawable/gesture_prev" />
+
+                    <TextView
+                        android:id="@+id/gesturePrev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="上一个"
+                        android:textColor="#888888"
+                        android:textSize="9sp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/gestureRepeatIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/gesture_repeat" />
+
+                    <TextView
+                        android:id="@+id/gestureRepeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="重练"
+                        android:textColor="#888888"
+                        android:textSize="9sp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/gestureNextIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleX="-1"
+                        android:src="@drawable/gesture_next" />
+
+                    <TextView
+                        android:id="@+id/gestureNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="下一个"
+                        android:textColor="#888888"
+                        android:textSize="9sp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/gestureExitIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/gesture_switch" />
+
+                    <TextView
+                        android:id="@+id/gestureExit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="退出"
+                        android:textColor="#888888"
+                        android:textSize="9sp"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:text="当前骨架"
+                android:textColor="#AAAAAA"
+                android:textSize="9sp" />
+
+            <com.dancecoach.app.ui.SkeletonOverlayView
+                android:id="@+id/skeletonOverlay"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:background="#22000000" />
+
+            <TextView
+                android:id="@+id/gestureTimeoutText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text=""
+                android:textColor="#FF9800"
+                android:textSize="9sp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/gestureConfirmProgress"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="4dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#FF9800"
+                android:backgroundTint="#44FFFFFF"
+                android:max="100"
+                android:progress="0" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
