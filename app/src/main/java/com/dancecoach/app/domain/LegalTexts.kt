@@ -40,7 +40,7 @@ object LegalTexts {
         "· Google ML Kit（Pose Detection）SDK\n" +
         "  — 使用受 Google ML Kit Terms of Service 约束\n" +
         "· 本应用自身源代码\n" +
-        "  — Apache License 2.0（开源仓库地址见应用关于页）\n\n" +
+        "  — Apache License 2.0（https://github.com/zhaocong1992/DanceCoach）\n\n" +
         "Apache License 2.0 完整文本：https://www.apache.org/licenses/LICENSE-2.0\n" +
         "如对许可声明有疑问，可联系：" + CONTACT_EMAIL
 

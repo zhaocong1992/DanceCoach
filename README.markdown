@@ -215,8 +215,8 @@ XML + View 体系在低端机上内存占用更可控，也让横竖屏两套布
 ### 构建步骤
 
 ```bash
-git clone https://github.com/<your-account>/aihuanwu-android.git
-cd aihuanwu-android
+git clone https://github.com/zhaocong1992/DanceCoach.git
+cd DanceCoach
 
 # 指向本地 SDK —— 这一步不可省略，local.properties 已被 .gitignore 排除
 echo "sdk.dir=/path/to/Android/Sdk" > local.properties
